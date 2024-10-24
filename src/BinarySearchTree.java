@@ -1,18 +1,22 @@
-public class BinarySearchTree<T extends Comparable<T>> implements DataStructure<T> {
-    private Node<T> root;
+public class BinarySearchTree<K extends Comparable<K>, T> implements DataStructure<K, T> {
+    private Node<K, T> root;
 
-    private class Node<T extends Comparable<T>> {
+    private class Node<K extends Comparable<K>, T> {
+        private K key;
         private T data;
-        private Node<T> left;
-        private Node<T> right;
+        private Node<K, T> left;
+        private Node<K, T> right;
 
-        public Node(T data) {
+        public Node(K key, T data) {
+            this.key = key;
             this.data = data;
         }
 
-        void addChild(Node<T> child) {
-            int cmp = child.data.compareTo(this.data);
-            if (cmp == 0) return;
+        void addChild(Node<K, T> child) {
+            int cmp = child.key.compareTo(this.key);
+            if (cmp == 0) { // if the key is the same overwrite with the new value
+                this.data = child.data;
+            }
             else if(cmp < 0) {
                 if (left != null) {
                     left.addChild(child);
@@ -30,15 +34,14 @@ public class BinarySearchTree<T extends Comparable<T>> implements DataStructure<
         }
 
         public String toString(String indent) {
-            String s = new String();
-            s += data.toString();
+            String s = data.toString();
             if(left != null) s += "\n" + indent +left.toString(indent + "-");
             if(right != null) s += "\n" + indent + right.toString(indent + "-");
             return s;
         }
 
         void printRecursiveNode(String indent) {
-            System.out.println(indent + this.data.toString());
+            System.out.println(indent + this.key.toString());
             if(left != null) left.printRecursiveNode(indent+ "l.");
             if(right != null) right.printRecursiveNode(indent + "r.");
         }
@@ -46,12 +49,24 @@ public class BinarySearchTree<T extends Comparable<T>> implements DataStructure<
         
     }
     public BinarySearchTree() {}
-    public void pushItem(T data) {
-        Node<T> newNode = new Node<>(data);
+
+    public void pushItem(K key, T data) {
+        Node<K, T> newNode = new Node<>(key, data);
         if (root == null) {
             root = newNode;
         }
         else root.addChild(newNode);
+    }
+
+    public T getItem(K key) {
+        Node<K, T> current = root;
+        do {
+            int cmp = key.compareTo(current.key);
+            if(cmp < 0) current = current.left;
+            else if(cmp > 0) current = current.right;
+            else return current.data; // cmp == 0
+        } while(current != null);
+        return null;
     }
 
     @Override

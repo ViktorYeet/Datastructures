@@ -1,4 +1,4 @@
-public class BinaryTree<T> implements DataStructure<T>{
+public class BinaryTree<T> /*implements DataStructure<T>*/{
     private Node<T> rootNode = null;
 
     private class Node<T> {
@@ -43,7 +43,7 @@ public class BinaryTree<T> implements DataStructure<T>{
      * create a new Node with the data and add it to the tree
      * @param data
      */
-    @Override
+
     public void pushItem(T data) {
         Node<T> newNode = new Node(data);
         if (rootNode == null) {
