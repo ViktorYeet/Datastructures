@@ -1,18 +1,18 @@
 public class BinarySearchTree<K extends Comparable<K>, T> implements DataStructure<K, T> {
-    private Node<K, T> root;
+    private Node root;
 
-    private class Node<K extends Comparable<K>, T> {
+    private class Node {
         private K key;
         private T data;
-        private Node<K, T> left;
-        private Node<K, T> right;
+        private Node left;
+        private Node right;
 
         public Node(K key, T data) {
             this.key = key;
             this.data = data;
         }
 
-        void addChild(Node<K, T> child) {
+        void addChild(Node child) {
             int cmp = child.key.compareTo(this.key);
             if (cmp == 0) { // if the key is the same overwrite with the new value
                 this.data = child.data;
@@ -51,7 +51,7 @@ public class BinarySearchTree<K extends Comparable<K>, T> implements DataStructu
     public BinarySearchTree() {}
 
     public void pushItem(K key, T data) {
-        Node<K, T> newNode = new Node<>(key, data);
+        Node newNode = new Node(key, data);
         if (root == null) {
             root = newNode;
         }
@@ -59,7 +59,7 @@ public class BinarySearchTree<K extends Comparable<K>, T> implements DataStructu
     }
 
     public T getItem(K key) {
-        Node<K, T> current = root;
+        Node current = root;
         do {
             int cmp = key.compareTo(current.key);
             if(cmp < 0) current = current.left;
